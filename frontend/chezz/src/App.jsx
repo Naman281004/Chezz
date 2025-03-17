@@ -1,11 +1,11 @@
-import Chessboard from "./components/Chessboard";
+import Referee from './components/Referee';
 
 function App() {
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gray-100">
-      <Chessboard />
+    <div className="app">
+      <Referee />
     </div>
   );
 }
 
-export default App
+export default App;

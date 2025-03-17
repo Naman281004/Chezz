@@ -1,267 +1,218 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Tile from "./Tile";
-import Referee from "../rules/rules";
-// Import piece images
-import pawnW from "../assets/pawn_w.png";
-import pawnB from "../assets/pawn_b.png";
-import rookW from "../assets/rook_w.png";
-import rookB from "../assets/rook_b.png";
-import knightW from "../assets/knight_w.png";
-import knightB from "../assets/knight_b.png";
-import bishopW from "../assets/bishop_w.png";
-import bishopB from "../assets/bishop_b.png";
-import queenW from "../assets/queen_w.png";
-import queenB from "../assets/queen_b.png";
-import kingW from "../assets/king_w.png";
-import kingB from "../assets/king_b.png";
+import {
+  VERTICAL_AXIS,
+  HORIZONTAL_AXIS,
+  GRID_SIZE,
+} from "../Constants";
+import { Position } from "../models";
 
-const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
-const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
-
-export const PieceType = {
-  PAWN: 0,
-  BISHOP: 1,
-  KNIGHT: 2,
-  ROOK: 3,
-  QUEEN: 4,
-  KING: 5
-};
-
-export const TeamType = {
-  OUR: 0,
-  OPPONENT: 1
-};
-
-const GRID_SIZE = 80;
-
-class Position {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  samePosition(otherPosition) {
-    return this.x === otherPosition.x && this.y === otherPosition.y;
-  }
-}
-
-// Initialize board setup
-let initialBoardSetup = [];
-
-for (let p = 0; p < 2; p++) {
-  const teamType = (p === 0) ? TeamType.OPPONENT : TeamType.OUR;
-  const type = (teamType === TeamType.OPPONENT) ? "b" : "w";
-  const y = (teamType === TeamType.OPPONENT) ? 7 : 0;
-  const pawnY = (teamType === TeamType.OPPONENT) ? 6 : 1;
-
-  // Initialize pawns
-  for (let i = 0; i < 8; i++) {
-    initialBoardSetup.push({
-      image: type === "w" ? pawnW : pawnB,
-      x: i,
-      y: pawnY,
-      type: PieceType.PAWN,
-      team: teamType
-    });
-  }
-
-  // Initialize other pieces
-  initialBoardSetup.push({
-    image: type === "w" ? rookW : rookB,
-    x: 0,
-    y: y,
-    type: PieceType.ROOK,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? knightW : knightB,
-    x: 1,
-    y: y,
-    type: PieceType.KNIGHT,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? bishopW : bishopB,
-    x: 2,
-    y: y,
-    type: PieceType.BISHOP,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? queenW : queenB,
-    x: 3,
-    y: y,
-    type: PieceType.QUEEN,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? kingW : kingB,
-    x: 4,
-    y: y,
-    type: PieceType.KING,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? bishopW : bishopB,
-    x: 5,
-    y: y,
-    type: PieceType.BISHOP,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? knightW : knightB,
-    x: 6,
-    y: y,
-    type: PieceType.KNIGHT,
-    team: teamType
-  });
-  initialBoardSetup.push({
-    image: type === "w" ? rookW : rookB,
-    x: 7,
-    y: y,
-    type: PieceType.ROOK,
-    team: teamType
-  });
-}
-
-export default function Chessboard() {
-  const [pieces, setPieces] = useState(initialBoardSetup);
+export default function Chessboard({playMove, pieces, getValidMoves}) {
   const [activePiece, setActivePiece] = useState(null);
   const [grabPosition, setGrabPosition] = useState(new Position(-1, -1));
   const chessboardRef = useRef(null);
-  const referee = new Referee();
+  const [draggedPieceInfo, setDraggedPieceInfo] = useState(null);
+  const [selectedPiece, setSelectedPiece] = useState(null);
+  
+  // Reset selected piece when board changes (after a move)
+  useEffect(() => {
+    if (selectedPiece) {
+      const pieceStillExists = pieces.some(p => 
+        p.samePosition(selectedPiece.position) && 
+        p.type === selectedPiece.type && 
+        p.team === selectedPiece.team
+      );
+      
+      if (!pieceStillExists) {
+        setSelectedPiece(null);
+      }
+    }
+  }, [pieces, selectedPiece]);
+
+  // Handle click on the board (for selecting pieces without dragging)
+  function handleTileClick(e) {
+    const chessboard = chessboardRef.current;
+    if (!chessboard) return;
+    
+    const chessboardRect = chessboard.getBoundingClientRect();
+    const x = Math.floor((e.clientX - chessboardRect.left) / 80);
+    const y = 7 - Math.floor((e.clientY - chessboardRect.top) / 80);
+    const clickPosition = new Position(x, y);
+    
+    // If we already have a selected piece, try to move it
+    if (selectedPiece) {
+      // If there are no possible moves calculated yet, calculate them
+      if (!selectedPiece.possibleMoves) {
+        selectedPiece.possibleMoves = getValidMoves(selectedPiece, pieces);
+      }
+      
+      const isValidMove = selectedPiece.possibleMoves.some(move => 
+        move.samePosition(clickPosition)
+      );
+      
+      if (isValidMove) {
+        playMove(selectedPiece, clickPosition);
+        setSelectedPiece(null);
+        return;
+      }
+    }
+    
+    // Otherwise, select a new piece or deselect if clicking the same piece
+    const pieceAtPosition = pieces.find(p => p.samePosition(clickPosition));
+    
+    if (selectedPiece && pieceAtPosition && 
+        pieceAtPosition.samePosition(selectedPiece.position)) {
+      // Deselect if clicking the same piece
+      setSelectedPiece(null);
+    } else if (pieceAtPosition) {
+      // Select the new piece and calculate its possible moves
+      const newSelectedPiece = {...pieceAtPosition};
+      newSelectedPiece.possibleMoves = getValidMoves(newSelectedPiece, pieces);
+      setSelectedPiece(newSelectedPiece);
+    } else {
+      // Clicked on empty square, deselect
+      setSelectedPiece(null);
+    }
+  }
 
   function grabPiece(e) {
+    // Don't handle grab if we're just clicking
+    if (e.button !== undefined && e.button !== 0) return;
+    
     const element = e.target;
     const chessboard = chessboardRef.current;
     if (element.classList.contains("chess-piece") && chessboard) {
-      const grabX = Math.floor((e.clientX - chessboard.offsetLeft) / GRID_SIZE);
-      const grabY = Math.abs(
-        Math.ceil((e.clientY - chessboard.offsetTop - 640) / GRID_SIZE)
-      );
+      e.preventDefault();
+      
+      // Calculate board coordinates
+      const chessboardRect = chessboard.getBoundingClientRect();
+      const grabX = Math.floor((e.clientX - chessboardRect.left) / 80);
+      const grabY = 7 - Math.floor((e.clientY - chessboardRect.top) / 80);
+      
+      // Check if there's a piece at this position
+      const currentPiece = pieces.find(p => p.samePosition(new Position(grabX, grabY)));
+      if (!currentPiece) return;
+      
+      // Store the position of the piece we're grabbing
       setGrabPosition(new Position(grabX, grabY));
-
-      const x = e.clientX - GRID_SIZE / 2;
-      const y = e.clientY - GRID_SIZE / 2;
-      element.style.position = "absolute";
-      element.style.left = `${x}px`;
-      element.style.top = `${y}px`;
-      element.style.zIndex = "1000";
+      
+      // Find the piece and calculate its possible moves
+      const newSelectedPiece = {...currentPiece};
+      newSelectedPiece.possibleMoves = getValidMoves(newSelectedPiece, pieces);
+      setSelectedPiece(newSelectedPiece);
+      
+      // Store the dragged piece info - position it exactly at cursor
+      setDraggedPieceInfo({
+        position: new Position(grabX, grabY),
+        image: currentPiece.image,
+        x: e.clientX,
+        y: e.clientY
+      });
 
       setActivePiece(element);
     }
   }
 
   function movePiece(e) {
-    const chessboard = chessboardRef.current;
-    if (activePiece && chessboard) {
-      const minX = chessboard.offsetLeft - 15;
-      const minY = chessboard.offsetTop - 10;
-      const maxX = chessboard.offsetLeft + chessboard.clientWidth - 47;
-      const maxY = chessboard.offsetTop + chessboard.clientHeight - 50;
-      const x = e.clientX - 50;
-      const y = e.clientY - 50;
-      activePiece.style.position = "absolute";
-
-      if (x < minX) {
-        activePiece.style.left = `${minX}px`;
-      } else if (x > maxX) {
-        activePiece.style.left = `${maxX}px`;
-      } else {
-        activePiece.style.left = `${x}px`;
-      }
-
-      if (y < minY) {
-        activePiece.style.top = `${minY}px`;
-      } else if (y > maxY) {
-        activePiece.style.top = `${maxY}px`;
-      } else {
-        activePiece.style.top = `${y}px`;
-      }
+    if (activePiece && draggedPieceInfo) {
+      e.preventDefault();
+      
+      // Update the dragged piece position - keep it exactly at cursor
+      setDraggedPieceInfo({
+        ...draggedPieceInfo,
+        x: e.clientX,
+        y: e.clientY
+      });
     }
   }
 
   function dropPiece(e) {
     const chessboard = chessboardRef.current;
-    if (activePiece && chessboard) {
-      const x = Math.floor((e.clientX - chessboard.offsetLeft) / GRID_SIZE);
-      const y = Math.abs(Math.ceil((e.clientY - chessboard.offsetTop - 640) / GRID_SIZE));
+    if (activePiece && chessboard && draggedPieceInfo) {
+      e.preventDefault();
       
-      // Reset piece styling
-      activePiece.style.position = "static";
-      activePiece.style.removeProperty("top");
-      activePiece.style.removeProperty("left");
-      activePiece.style.removeProperty("zIndex");
-      
-      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-        setPieces((currentPieces) => {
-          // Find the moving piece and the piece at destination
-          const movingPiece = currentPieces.find(
-            p => p.x === grabPosition.x && p.y === grabPosition.y
-          );
-          const pieceAtDestination = currentPieces.find(
-            p => p.x === x && p.y === y
-          );
-  
-          if (movingPiece) {
-            const validMove = referee.isValidMove(
-              grabPosition.x,
-              grabPosition.y,
-              x,
-              y,
-              movingPiece.type,
-              movingPiece.team
-            );
-  
-            if (validMove) {
-              // Create new array without the captured piece (if any)
-              let newPieces = currentPieces.filter(p => 
-                !(p.x === x && p.y === y)
-              );
-              
-              // Remove the moving piece from its old position
-              newPieces = newPieces.filter(p => 
-                !(p.x === grabPosition.x && p.y === grabPosition.y)
-              );
-              
-              // Add the moving piece at its new position
-              newPieces.push({
-                ...movingPiece,
-                x: x,
-                y: y
-              });
-  
-              return newPieces;
-            }
-          }
-          return currentPieces;
-        });
+      const chessboardRect = chessboard.getBoundingClientRect();
+      const x = Math.floor((e.clientX - chessboardRect.left) / 80);
+      const y = 7 - Math.floor((e.clientY - chessboardRect.top) / 80);
+
+      // Ensure coordinates are within the board
+      const validX = Math.max(0, Math.min(7, x));
+      const validY = Math.max(0, Math.min(7, y));
+
+      const currentPiece = pieces.find((p) => p.samePosition(grabPosition));
+
+      if (currentPiece) {
+        const moveSuccess = playMove(selectedPiece, new Position(validX, validY));
+        
+        // If the move was successful, clear the selected piece
+        if (moveSuccess) {
+          setSelectedPiece(null);
+        }
       }
       
-      setGrabPosition(new Position(-1, -1));
       setActivePiece(null);
+      setDraggedPieceInfo(null);
+      setGrabPosition(new Position(-1, -1));
     }
   }
 
   let board = [];
-  for (let j = verticalAxis.length - 1; j >= 0; j--) {
-    for (let i = 0; i < horizontalAxis.length; i++) {
-      const number = i + j;
-      const piece = pieces.find(p => p.x === i && p.y === j);
-      const image = piece ? piece.image : null;
-      board.push(<Tile key={`${i},${j}`} image={image} number={number} />);
+
+  for (let j = VERTICAL_AXIS.length - 1; j >= 0; j--) {
+    for (let i = 0; i < HORIZONTAL_AXIS.length; i++) {
+      const number = j + i + 2;
+      const currentPosition = new Position(i, j);
+      
+      // Don't show the piece at its original position while it's being dragged
+      const isDragging = draggedPieceInfo && 
+                         draggedPieceInfo.position.x === i && 
+                         draggedPieceInfo.position.y === j;
+      
+      // Only show the piece if it's not being dragged
+      const piece = isDragging ? undefined : pieces.find((p) => p.samePosition(currentPosition));
+      let image = piece ? piece.image : undefined;
+
+      // Determine if this tile should be highlighted
+      let highlight = false;
+      
+      // Check if this position is a valid move for the selected piece
+      if (selectedPiece && selectedPiece.possibleMoves) {
+        highlight = selectedPiece.possibleMoves.some(move => 
+          move.samePosition(currentPosition)
+        );
+      }
+
+      board.push(<Tile key={`${j},${i}`} image={image} number={number} highlight={highlight} />);
     }
   }
 
   return (
-    <div
-      onMouseMove={(e) => movePiece(e)}
-      onMouseDown={(e) => grabPiece(e)}
-      onMouseUp={(e) => dropPiece(e)}
-      className="grid grid-cols-8 border-0 border-gray-800 shadow-xl w-[640px] h-[640px]"
-      ref={chessboardRef}
-    >
-      {board}
-    </div>
+    <>
+      <div
+        onMouseMove={(e) => movePiece(e)}
+        onMouseDown={(e) => grabPiece(e)}
+        onMouseUp={(e) => dropPiece(e)}
+        onClick={(e) => handleTileClick(e)}
+        onTouchStart={(e) => grabPiece(e.touches[0])}
+        onTouchMove={(e) => movePiece(e.touches[0])}
+        onTouchEnd={(e) => dropPiece(e.changedTouches[0])}
+        id="chessboard"
+        ref={chessboardRef}
+        className="grid grid-cols-8 grid-rows-8 w-[640px] h-[640px] bg-[#779556] select-none relative touch-none"
+      >
+        {board}
+        {draggedPieceInfo && (
+          <div 
+            className="absolute w-[60px] h-[60px] bg-no-repeat bg-contain bg-center z-50 pointer-events-none"
+            style={{
+              backgroundImage: `url(${draggedPieceInfo.image})`,
+              left: `${draggedPieceInfo.x - 30}px`,
+              top: `${draggedPieceInfo.y - 30}px`,
+              position: 'fixed'
+            }}
+          />
+        )}
+      </div>
+    </>
   );
 }
