@@ -1,0 +1,501 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&family=Roboto+Mono&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #121212;
+  color: #f0f0f0;
+  text-align: center;
+  font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+/* jackson's additions */
+
+/* home */
+
+body{
+  /* Styles are now in the main body selector above */
+}
+
+.home-buttons {
+  padding-top: 2%;
+}
+
+.home-buttons button {
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 18px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: whitesmoke;
+  margin-top: 0px;
+
+}
+
+
+.home img {
+  width: 40%;
+  height: 40%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.board {
+  width: 40%;
+  height: 40%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* algorithm visualization */
+
+.viz-wrapper {
+  display: flex;
+  flex-direction: row;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.tree {
+  flex: 1;
+  min-width: 300px;
+  padding: 10px;
+  background-color: #1e1e1e;
+  color: white;
+  border-style: solid;
+  border-color: #333;
+  margin-left: 20px;
+  font-size: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  width: 60%;
+  overflow-y: scroll;
+}
+
+.tiny-board {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: block;
+}
+
+.viz-row {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  border-style: dashed;
+  border-color: #444;
+}
+
+
+.tree-node{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.position-info p {
+  margin: 0;
+}
+
+.position-info button {
+  margin: 0;
+  font-size: 10px;
+}
+
+/* navbar */
+
+.AccountCreation{
+  flex: 1;
+  flexDirection: "column";
+  justifyContent: "center";
+  alignItems: "center";
+}
+
+.navbar{
+  background-color: #000;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s;
+}
+
+.navbar a.main.active{
+  float: left;
+  display: block;
+  color: #0af;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #000;
+}
+
+.navbar a.active {
+  background-color: #222;
+  color: #0af;
+}
+
+
+.navbar a:hover {
+  background-color: #333;
+  color: white;
+}
+/* chessboard */
+
+/* game init */
+
+.setup-wrapper {
+  border-style: solid;
+  border-color: #333;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 50%;
+  max-height: 50%;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+select { 
+  width: 300px;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.setup-wrapper button {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* profile */
+
+.games-wrapper {
+  display:flex;
+  width: 1000px;
+  padding-top: 20px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.game-summary {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #333;
+  padding: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+  background-color: #1e1e1e;
+  border-radius: 4px;
+}
+
+.account-wrapper {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #333;
+  max-width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+  padding-bottom: 10px;
+  background-color: #1e1e1e;
+  border-radius: 4px;
+}
+
+/* ALL BUTTONS */
+button {
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333;
+  color: white;
+  margin-top: 5px;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+/* about page */
+.about-text {
+  margin-left:200px;
+  margin-right:200px;
+}
+
+/* Game controls styling */
+.game-controls {
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.game-controls button {
+  padding: 8px 15px;
+  background-color: #0af;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.game-controls button:hover {
+  background-color: #08d;
+}
+
+.game-controls button:disabled {
+  background-color: #333;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.game-controls button:active {
+  background-color: #059;
+}
+
+@media (max-width: 768px) {
+  /* Keep other responsive styles but remove the viz-wrapper and board styles */
+  /* ... */
+}
+
+/* Home page specific styling */
+.home {
+  padding: 40px 20px;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Main title styling */
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.main-title {
+  font-size: 5rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin: 0 20px;
+  background: linear-gradient(to right, #00aaff, #0077ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 5px 15px rgba(0, 170, 255, 0.2);
+  position: relative;
+}
+
+.main-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00aaff, #0077ff);
+  border-radius: 2px;
+}
+
+/* Chess icons */
+.chess-icon {
+  width: 60px;
+  height: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.3s ease;
+}
+
+.king-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="none" fill-rule="evenodd" stroke="%230af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 11.63V6M20 8h5" stroke-linejoin="miter"/><path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" fill="%230af" stroke-linecap="butt" stroke-linejoin="miter"/><path d="M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V27v-3.5c-3.5-7.5-13-10.5-16-4-3 6 5 10 5 10V37z" fill="%230af"/><path d="M11.5 30c5.5-3 15.5-3 21 0M11.5 33.5c5.5-3 15.5-3 21 0M11.5 37c5.5-3 15.5-3 21 0" stroke="%23000"/></g></svg>');
+  transform: rotate(-10deg);
+}
+
+.queen-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%230af" fill-rule="evenodd" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM24.5 7.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM41 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM16 8.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0zM33 9a2 2 0 1 1-4 0 2 2 0 1 1 4 0z" fill="%230af" stroke="%23000"/><path d="M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-14V25L7 14l2 12z" stroke-linecap="butt"/><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1.5 2.5-1.5 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-8.5-1.5-18.5-1.5-27 0z" stroke-linecap="butt"/><path d="M11.5 30c3.5-1 18.5-1 22 0M12 33.5c6-1 15-1 21 0" fill="none"/></g></svg>');
+  transform: rotate(10deg);
+}
+
+/* Tagline styling */
+.tagline {
+  margin-bottom: 60px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.tagline h2 {
+  font-weight: 400;
+  color: #ccc;
+  letter-spacing: 1px;
+}
+
+/* Option cards */
+.home-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+  opacity: 0;
+}
+
+.option-card {
+  background: rgba(30, 30, 30, 0.7);
+  border-radius: 12px;
+  padding: 25px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.option-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(40, 40, 40, 0.8);
+  border-color: #0af;
+}
+
+.option-icon {
+  width: 60px;
+  height: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 15px;
+}
+
+.ai-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%230af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 1 9 9M12 2a9 9 0 0 0-9 9"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M7 22h10"/><path d="M21 13a9 9 0 0 1-9 9 9 9 0 0 1-9-9" /><circle cx="12" cy="9" r="2" fill="%230af"/></svg>');
+}
+
+.human-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%230af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>');
+}
+
+.visualize-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%230af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>');
+}
+
+.option-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.option-card p {
+  color: #aaa;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.fade-in-delayed {
+  animation: fadeIn 1.2s ease 0.8s forwards;
+}
+
+.slide-up {
+  animation: slideUp 1s ease 0.4s forwards;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 3.5rem;
+  }
+  
+  .chess-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .home-options {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .option-card {
+    width: 80%;
+    max-width: 300px;
+  }
+}
