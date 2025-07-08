@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import {Routes, Route} from "react-router-dom"
 import HomePage from "./components/HomePage";
-import RandomVRandom from "./chess/RandomVRandom";
+import HumanVHuman from "./chess/HumanVHuman";
 import InitUserGame from "./chess/InitUserGame";
 import VisualizeAlg from "./chess/VisualizeAlg";
 
@@ -12,7 +12,7 @@ function App() {
       
       <Navbar />
       <Routes>
-        <Route path = '/randvsrand' element = {<RandomVRandom/>}/>
+        <Route path = '/randvsrand' element = {<HumanVHuman/>}/>
 
         <Route path = '/visualize' element = {<VisualizeAlg />}/>
 

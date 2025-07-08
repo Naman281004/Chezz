@@ -1,3 +1,6 @@
+// This file's logic has been moved to minimax.worker.js
+// It is kept to prevent breaking imports, but can be removed later.
+
 import { Chess } from "chess.js";
 
 export const pieceValue = {
@@ -72,28 +75,40 @@ export function MINIMAX(game, depth, white_turn){
 }
 
 let totalCalls = 0;
-export function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta){
+export function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta, position_tree = null, initial_cpudepth = 3){
     if (depth == 0 || game.isGameOver()){   
         return [EVALUATE_POSITION(game), null]
     }
 
-    else if (white_turn){
+    let moves = GENERATE_MOVES(game);
+    
+    if (white_turn){
         let bestVal = -Infinity;
         let bestMove = null;
-        let moves = GENERATE_MOVES(game);
 
-
-        for (let m in moves){
-            let newPos = UPDATE_POSITION(game, moves[m]);
+        for (let move of moves){
+            const current_fen = game.fen();
+            game.move(move);
+            let value = MINIMAX_ALPHA_BETA(game, depth-1, false, alpha, beta, position_tree, initial_cpudepth)[0];
+            game.undo();
             
-            let value = MINIMAX_ALPHA_BETA(newPos, depth-1, false, alpha, beta)[0];
             if (value > bestVal){
                 bestVal = value;
-                bestMove = moves[m]
+                bestMove = move
             }
             alpha = Math.max(alpha, bestVal)
 
+            if (position_tree !== null) {
+                if (!position_tree[current_fen]){
+                    position_tree[current_fen] = [];
+                }
+                position_tree[current_fen].push([game.fen(), move.san, value, alpha, beta])
+            }
+
             if (beta <= alpha){
+                if (position_tree !== null) {
+                    position_tree[current_fen].push(["beta <= alpha","ALPHA >= BETA","NA",alpha,beta])
+                }
                 break;
             }
         }
@@ -103,21 +118,33 @@ export function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta){
         return [bestVal, bestMove];
     }
 
-    else if (white_turn == false){
+    else { // black's turn
         let bestVal = Infinity;
         let bestMove = null;
-        let moves = GENERATE_MOVES(game);
         
-        for (let m in moves){
-            let newPos = UPDATE_POSITION(game, moves[m]);
-            let value = MINIMAX_ALPHA_BETA(newPos, depth-1, true, alpha, beta)[0];
+        for (let move of moves){
+            const current_fen = game.fen();
+            game.move(move);
+            let value = MINIMAX_ALPHA_BETA(game, depth-1, true, alpha, beta, position_tree, initial_cpudepth)[0];
+            game.undo();
+
             if (value < bestVal){
                 bestVal = value;
-                bestMove = moves[m]
+                bestMove = move
             }
             beta = Math.min(beta, bestVal)
 
+            if (position_tree !== null) {
+                if (!position_tree[current_fen]){
+                    position_tree[current_fen] = [];
+                }
+                position_tree[current_fen].push([game.fen(), move.san, value, alpha, beta])
+            }
+
             if (beta <= alpha){
+                if (position_tree !== null) {
+                    position_tree[current_fen].push(["NA","ALPHA >= BETA","NA",alpha,beta])
+                }
                 break;
             }
         }
@@ -126,7 +153,6 @@ export function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta){
         }
         return [bestVal, bestMove];
     }
-
 }
 
 export function GENERATE_MOVES(game){
