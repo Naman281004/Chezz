@@ -4,17 +4,7 @@ Chezz is a feature-rich web-based chess application built with React. It feature
 
 ---
 
-### 🚀 Live Demo
-
 https://chezz.onrender.com/
-
----
-
-### 🎬 Project Demo
-
-*A brief recording showcasing the main features, including the AI visualizer and responsive UI.*
-
-![Chezz Project Demo](./screenshots/Recording-2025-07-09-030412.gif)
 
 ---
 
@@ -32,7 +22,13 @@ https://chezz.onrender.com/
 ![Chezz AI Visualizer](./screenshots/Screenshot%202025-07-09%20024514.png)
 
 ---
+### 🎬 project walkthrough
 
+*A brief recording showcasing the main features, including the AI visualizer and responsive UI.*
+
+![Chezz Project Demo](./screenshots/Recording-2025-07-09-030412.gif)
+
+---
 ## ✨ Key Features
 
 - **Play vs. AI:** Challenge a custom-built chess AI with three adjustable difficulty levels (Easy, Medium, Hard).
