@@ -6,7 +6,7 @@ Chezz is a feature-rich web-based chess application built with React. It feature
 
 ### 🚀 Live Demo
 
-**[Link to Deployed Application]** `(<- Add your deployment link here)`
+https://chezz.onrender.com/
 
 ---
 
