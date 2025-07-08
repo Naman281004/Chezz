@@ -12,13 +12,16 @@ Chezz is a feature-rich web-based chess application built with React. It feature
 
 ### 📸 Screenshots
 
-*Add your screenshots here. You can capture images of the different game modes, the AI visualizer in action, and the game setup screen.*
+*The Chezz application provides a clean and intuitive interface for all game modes.*
 
-**(Screenshot of the Home Page)**
+**Homepage**
+![Chezz Homepage](./screenshots/Screenshot%202025-07-09%20023900.png)
 
-**(Screenshot of the Play vs. AI mode with move highlighting)**
+**In-Game vs. AI**
+![Chezz Play vs AI](./screenshots/Screenshot%202025-07-09%20024503.png)
 
-**(Screenshot of the AI Algorithm Visualizer)**
+**AI Algorithm Visualizer**
+![Chezz AI Visualizer](./screenshots/Screenshot%202025-07-09%20024514.png)
 
 ---
 
