@@ -10,6 +10,14 @@ https://chezz.onrender.com/
 
 ---
 
+### 🎬 Project Demo
+
+*A brief recording showcasing the main features, including the AI visualizer and responsive UI.*
+
+![Chezz Project Demo](./screenshots/Recording-2025-07-09-030412.gif)
+
+---
+
 ### 📸 Screenshots
 
 *The Chezz application provides a clean and intuitive interface for all game modes.*
