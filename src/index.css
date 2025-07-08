@@ -499,3 +499,87 @@ button:hover {
     max-width: 300px;
   }
 }
+
+/* Promotion modal */
+.promotion-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(30, 30, 30, 0.95);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  text-align: center;
+  border: 2px solid #0af;
+}
+
+.promotion-modal h3 {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.promotion-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.promotion-options button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.visualize-container {
+  margin-bottom: 50px;
+}
+
+.thinking-indicator {
+  min-height: 24px; /* Adjust height as needed */
+  transition: visibility 0s, opacity 0.3s linear;
+}
+
+.thinking-indicator.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* Check alert */
+.check-alert {
+  background-color: #ff3333;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  margin: 10px auto;
+  text-align: center;
+  width: fit-content;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Game over message */
+.game-over-message {
+  background-color: rgba(30, 30, 30, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 15px auto;
+  text-align: center;
+  width: fit-content;
+  border: 2px solid #0af;
+  animation: fadeIn 0.5s;
+}
+
+.game-over-message h2 {
+  color: #0af;
+  margin: 0;
+}

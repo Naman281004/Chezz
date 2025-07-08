@@ -35,8 +35,8 @@ export default function TreeVisualizer({positionTree, initialPosition, head=fals
                     <Chessboard 
                         position={positionFEN} 
                         boardWidth="100"
-                        customDarkSquareStyle={{ backgroundColor: "#769656" }}
-                        customLightSquareStyle={{ backgroundColor: "#eeeed2" }}
+                        customDarkSquareStyle={{ backgroundColor: "#8BAFC7" }}
+                        customLightSquareStyle={{ backgroundColor: "#FFFFFF" }}
                     />
                 </div>
                 <div className="position-info">

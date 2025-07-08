@@ -8,13 +8,15 @@ function ComputerVRandom(){
     const [FEN, setFEN] = useState(chess.fen())
     const [PlayPause, setPlayPause] = useState(false);
     const [inProgress, setInProgress] = useState(true);
-
+    const [isCheck, setIsCheck] = useState(false);
+    const [winner, setWinner] = useState(null);
 
     function makeMinimaxABMove(game, depth, white){
         if (!game.isGameOver()) {
             const minimaxABMove = MINIMAX_ALPHA_BETA(game, depth, white, -Infinity, Infinity)[1];
             game.move(minimaxABMove)
             setFEN(game.fen())
+            setIsCheck(game.inCheck());
         }
     }
 
@@ -25,6 +27,7 @@ function ComputerVRandom(){
             console.log(move);
             chess.move(move)
             setFEN(chess.fen())
+            setIsCheck(chess.inCheck());
         }
     }
 
@@ -41,6 +44,12 @@ function ComputerVRandom(){
             return () => timedMove
         } else {
             setInProgress(false);
+            // Set winner
+            if (chess.isCheckmate()) {
+                setWinner(chess.turn() === "w" ? "b" : "w");
+            } else if (chess.isDraw()) {
+                setWinner("d");
+            }
         }
     }, [FEN])
 
@@ -48,15 +57,27 @@ function ComputerVRandom(){
         setPlayPause(!PlayPause);
     }
 
-    let winner;
+    function resetGame() {
+        const newChess = new Chess();
+        setChess(newChess);
+        setFEN(newChess.fen());
+        setInProgress(true);
+        setWinner(null);
+        setIsCheck(false);
+        if (!PlayPause) {
+            setPlayPause(false);
+        }
+    }
+
     function gameOverMessage(){
-        if (winner == "b"){
-            return "Game over! Black wins!"
-        } else if (winner == "w"){
-            return "Game over! White wins!"
-        } else if (winner == "d"){
+        if (winner === "b"){
+            return "Checkmate! Black wins!"
+        } else if (winner === "w"){
+            return "Checkmate! White wins!"
+        } else if (winner === "d"){
             return "It's a draw!"
         }
+        return "";
     }
 
   return(
@@ -65,11 +86,23 @@ function ComputerVRandom(){
         <p>In this demonstration, an intelligent chess computer is playing as the white pieces, while the
             black pieces are moved at random. Enjoy!
         </p>
+        {isCheck && inProgress && <div className="check-alert">CHECK!</div>}
         <div className="board">
-            <Chessboard position={FEN}/>
+            <Chessboard 
+                position={FEN}
+                customDarkSquareStyle={{ backgroundColor: "#8BAFC7" }}
+                customLightSquareStyle={{ backgroundColor: "#FFFFFF" }}
+            />
         </div>
-        <button onClick={handlePlayPauseClick}>{PlayPause ? "Pause" : "Play"}</button>
-        {inProgress ? null : <p>{gameOverMessage()}</p>}
+        <div className="game-controls">
+            <button onClick={handlePlayPauseClick}>{PlayPause ? "Pause" : "Play"}</button>
+            <button onClick={resetGame}>New Game</button>
+        </div>
+        {!inProgress ? 
+            <div className="game-over-message">
+                <h2>{gameOverMessage()}</h2>
+            </div> 
+        : null}
         
     </div>
   )
