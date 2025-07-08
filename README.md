@@ -1,4 +1,4 @@
-# Chezz: An Intelligent Chess Application
+# Chezz: AI Chess Application
 
 Chezz is a feature-rich web-based chess application built with React. It features a custom-built AI opponent powered by the Minimax algorithm, an interactive AI visualizer that displays the algorithm's decision-making process, and multiple game modes. The application is designed with a focus on performance and user experience, utilizing Web Workers to ensure a responsive, non-blocking interface during complex AI computations.
 
@@ -109,11 +109,3 @@ To set up and run this project on your local machine, follow these steps:
 
 ---
 
-## 🔮 Future Improvements
-
-- **User Authentication:** Add user accounts to save game history and track stats.
-- **Online Multiplayer:** Implement real-time gameplay against other users using WebSockets.
-- **Enhanced AI:**
-    - Implement more advanced evaluation metrics (e.g., king safety, passed pawns, mobility).
-    - Explore more advanced search algorithms or opening book databases.
-- **Add a Comprehensive Test Suite:** Implement unit and integration tests using a framework like Jest and React Testing Library.
