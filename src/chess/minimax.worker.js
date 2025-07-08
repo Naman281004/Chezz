@@ -48,6 +48,7 @@ function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta, position_tree 
         for (let move of moves){
             const current_fen = position_tree ? game.fen() : null;
             game.move(move);
+            const child_fen = game.fen();
             let [value, _] = MINIMAX_ALPHA_BETA(game, depth-1, false, alpha, beta, position_tree, initial_cpudepth);
             game.undo();
             
@@ -61,7 +62,7 @@ function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta, position_tree 
                 if (!position_tree[current_fen]){
                     position_tree[current_fen] = [];
                 }
-                position_tree[current_fen].push([game.fen(), move.san, value, alpha, beta])
+                position_tree[current_fen].push([child_fen, move.san, value, alpha, beta])
             }
 
             if (beta <= alpha){
@@ -82,6 +83,7 @@ function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta, position_tree 
         for (let move of moves){
             const current_fen = position_tree ? game.fen() : null;
             game.move(move);
+            const child_fen = game.fen();
             let [value, _] = MINIMAX_ALPHA_BETA(game, depth-1, true, alpha, beta, position_tree, initial_cpudepth);
             game.undo();
 
@@ -95,7 +97,7 @@ function MINIMAX_ALPHA_BETA(game, depth, white_turn, alpha, beta, position_tree 
                 if (!position_tree[current_fen]){
                     position_tree[current_fen] = [];
                 }
-                position_tree[current_fen].push([game.fen(), move.san, value, alpha, beta])
+                position_tree[current_fen].push([child_fen, move.san, value, alpha, beta])
             }
 
             if (beta <= alpha){

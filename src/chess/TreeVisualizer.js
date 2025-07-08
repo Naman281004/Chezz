@@ -53,8 +53,8 @@ export default function TreeVisualizer({positionTree, initialPosition, head=fals
                 {(showChildren && children!=null)
                 ? 
                 <div className="viz-row">
-                    {children.map(child =>
-                    <div>
+                    {children.map((child, index) =>
+                    <div key={`${child[0]}-${index}`}>
                         <TreeVisualizer positionTree={positionTree} initialPosition={child}/>
                     </div>
                     ) }
